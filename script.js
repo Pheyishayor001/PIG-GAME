@@ -14,18 +14,29 @@ const btnRoll = document.querySelector('.btn--roll');
 const btnHold = document.querySelector('.btn--hold');
 
 // Starting conditons
-score0El.textContent = 0;
-score1El.textContent = 0;
-diceEl.classList.add('hidden');
 
-console.log(score0El, score1El, diceEl, btnRoll, btnNew, btnHold);
+let scores, currentScore, activePlayer, playing; //declaring the variable without assignments.
 
-// this needs to be defined out of the click function below so it isnt changed after every click.
+const init = function () {
+  //init for initialization.
 
-const scores = [0, 0];
-let currentScore = 0;
-let activePlayer = 0; //setting the active player to 0 helps make the tenary operator switch between player 0(1) & 1(2)
-let playing = true; // this boolean value implements the game-over state.
+  scores = [0, 0];
+  currentScore = 0;
+  activePlayer = 0; //setting the active player to 0 helps make the tenary operator switch between player 0(1) & 1(2)
+  playing = true; // this boolean value implements the game-over state.
+
+  score0El.textContent = 0;
+  score1El.textContent = 0;
+  current0El.textContent = 0;
+  current1El.textContent = 0;
+
+  diceEl.classList.add('hidden');
+  player0El.classList.remove('player--winner');
+  player1El.classList.remove('player--winner');
+
+  player0El.classList.add('player--active');
+  player1El.classList.remove('player--active');
+};
 
 const switchPlayer = function () {
   document.getElementById(`current--${activePlayer}`).textContent = 0; // reset the score to 0
@@ -37,6 +48,8 @@ const switchPlayer = function () {
   player0El.classList.toggle('player--active');
   player1El.classList.toggle('player--active');
 };
+
+init(); //invoke the function for the initial state of the game to be set.
 
 // Rolling dice functionality
 btnRoll.addEventListener('click', function () {
@@ -73,7 +86,7 @@ btnHold.addEventListener('click', function () {
 
     // 2. Check if player's score is >= 100
 
-    if (scores[activePlayer] >= 20) {
+    if (scores[activePlayer] >= 100) {
       //  finish the game
       playing = false; // when the >=20 becomes true, the playing=false variable is read, thus deactivating the roll dice and hold button.
 
@@ -91,3 +104,5 @@ btnHold.addEventListener('click', function () {
     }
   }
 });
+
+btnNew.addEventListener('click', init);
